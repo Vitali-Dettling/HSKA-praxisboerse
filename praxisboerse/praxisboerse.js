@@ -1,26 +1,12 @@
 /**
  * Created by Vitali Dettling on 14.10.2015.
  */
-'use strict';
-
-/**
- * Main module.
- */
-var mainApp = angular.module('MainApp', []);//, 'ui.bootstrap']); <- TODO Later!!!
-
-/**
- * Controller for the main page.
- */
-mainApp.controller('MainController', [ '$scope', function($scope) {
-
-   //TODO Delete
-   $scope.GetStarted = "GetStarted";
 
 
+var praxisboerse = angular.module('Praxisboerse', []);
 
-}]);
 
-mainApp.config(function($httpProvider) {
+praxisboerse.config(function($httpProvider) {
    // Enable Cross-Domain-Communication
    $httpProvider.defaults.useXDomain = true;
    // Enable identification
@@ -32,9 +18,11 @@ mainApp.config(function($httpProvider) {
  * Noch einfacher klappt der Zugriff auf eine REST-Schnittstelle
  * in vielen Faellen mit dem Modul ngResource.
  */
-mainApp.factory('PraxisboerseService', [ '$http', function($http) {
+praxisboerse.factory('PraxisboerseService', [ '$http', function($http) {
    var server = {};
    var $base64;
+   var url = "https://www.iwi.hs-karlsruhe.de/Intranetaccess/REST";
+
 
    return {
 

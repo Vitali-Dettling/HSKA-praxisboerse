@@ -1,31 +1,40 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="MainApp" ng-strict-d>
+<html lang="en" ng-app="mainApp" ng-strict-d>
 <head>
 
     <meta charset="utf-8">
     <title>Praxisbörse</title>
 
+    <!-- All needed dependencies. -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
-
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-    <script type="text/javascript" src="js/praxisboerse.js"></script>
 
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
 
-    <script src="js/angular.min.js"></script>
-    <!-- <script src="js/i18n/angular-locale_de-de.js"></script> -->
-    <script src="js/ui-bootstrap-tpls-0.13.4.min.js"></script>
+    <script type="text/javascript" src="praxisboerse/praxisboerse.js"></script>
+
+    <!-- http://getbootstrap.com/css/-->
+    <script type="text/javascript" src="js/ui-bootstrap-tpls-0.13.4.min.js"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+
     <script src="angular-base64/angular-base64.min.js"></script>
+    <script src="js/i18n/angular-locale_de-de.js"></script>
 
 </head>
-<body >
 
-    <praxisboerse-view url="https://www.iwi.hs-karlsruhe.de/Intranetaccess/REST"></praxisboerse-view>
+<body ng-controller="MainController">
 
+    <!-- TODO Debug information delete after the program is working. -->
+    <div>DEBUG: {{DependenciesWrong}}</div>
+    <!--TODO End Debug information. Delete-->
+
+
+    <button class="btn btn-default" ng-click="refresh()">Bush the Button ^^ </button>
 
     <div ng-Controller="MainController">
-        GetStarted = {{ GetStarted }}
+        GetStarted = {{ Buttom }}
     </div>
-
 
 </body>
 </html>
