@@ -7,7 +7,7 @@ var mainApp = angular.module('mainApp', ['base64']);//'Praxisboerse','ui.bootstr
 
 /**
  * Controller for the main page.
-*/
+*/           ///Unterschied zwischen ' und "? //Was bedeuten diese parameter!!!
 mainApp.controller('MainController',['$base64', '$scope', '$http', function($base64, $scope, $http) {
 
     //TODO Debug information delete after the program is working.
@@ -15,14 +15,21 @@ mainApp.controller('MainController',['$base64', '$scope', '$http', function($bas
     //TODO End Debug information. Delete
 
     var $base64;
-    var url = "https://www.iwi.hs-karlsruhe.de/Intranetaccess/REST";
-
-    $http.defaults.headers.common.Authorization = "Basic" + $base64.encode("User" + ":" + "Pass");
-    $http.post(url, 1234);
-
-    //TODO Here implement the API
-    $scope.API = $http.toString();
-
+    $http.defaults.headers.common.Authorization = 'Basic ' + $base64.encode("user" + ":" + "pass");
+    // Simple GET request.
+    $http({
+        method: 'GET',
+        url: "https://www.iwi.hs-karlsruhe.de/Intranetaccess/REST/credential/encryptedpassword/",
+        port: 1234
+    }).then(function successCallback(response) {
+        // this callback will be called asynchronously
+        // when the response is available
+        $scope.response = response;
+    }, function errorCallback(error) {
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+        $scope.error = error;
+    });
 }]);
 
 //Is the method called automatically???
