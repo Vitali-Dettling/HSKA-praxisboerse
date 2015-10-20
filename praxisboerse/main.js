@@ -3,7 +3,7 @@
  */
 'use strict'; //<= Was bedeudet das???                  ng-Config = Derictive???
 
-var mainApp = angular.module('mainApp', ['Credentials']);//'Praxisboerse','ui.bootstrap'
+var mainApp = angular.module('mainApp', ['Credentials', 'praxisboerse']);//'Praxisboerse','ui.bootstrap'
 
 /**
  * Controller for the main page.
@@ -12,5 +12,8 @@ mainApp.controller('MainController', [ '$scope', function( $scope ) {
     //TODO Debug information delete after the program is working.
     $scope.DependenciesWrong = "Dependencies are Working.";
     //TODO End Debug information. Delete
+
+
+
 
 }]);

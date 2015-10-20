@@ -4,16 +4,16 @@
 
 var credentials = angular.module('Credentials', ['base64']);
 
-credentials.controller('LoginController',['$base64', '$scope', '$http', function($base64, $scope, $http) {
+credentials.controller('LoginController',['$base64', '$scope', '$http', '$window', function($base64, $scope, $http, $window) {
 
     //Variable had to be initialized outside a method
     var $base64;
 
-    //Initial username and password, to be entered.
-    $scope.username = 'user name';
-    $scope.password = 'password';
+    //Initial username and password, to be entered.00
+    $scope.username = 'devi1015';
+    $scope.password = 'w4z96sY2';
 
-    $scope.submit = function() {
+    $scope.login = function() {
 
         //If both credentials are included in the text box.
         if ($scope.username && $scope.password) {
@@ -38,6 +38,12 @@ credentials.controller('LoginController',['$base64', '$scope', '$http', function
             $scope.password = '';
         }
     };
+
+
+    $scope.logout = function() {
+        delete $window.sessionStorage.token;
+
+    }
 }]);
 
 //Is the method called automatically???

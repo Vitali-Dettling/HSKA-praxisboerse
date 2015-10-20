@@ -1,0 +1,45 @@
+<!--
+ Created by Vitali Dettling on 20.10.2015.
+-->
+
+<div ng-controller="PraxisboerseController">
+
+
+    <label for="type"> Please select one of the following options: </label><br>
+    <select name="singleSelect" id="type" ng-model="data.type">
+        <option value="">---Please select---</option>
+        <option value="internship">Praxissemester</option>
+        <option value="joboffer">Job Angebote</option>
+        <option value="workingstudent">Werkstudent Angebote</option>
+        <option value="thesis">Thesis Angebote</option>
+    </select><br>
+
+    <button ng-click="type()">Selected</button><br>
+
+    <!-- Servers response for the users request -->
+    <label> Responses: </label><br>
+    <div ng-repeat="company in responseData.companies">
+
+        <h2 ng-bind="mealgroup.title"></h2>
+        <table class="table table-bordered table-hover table-condensed">
+            <thead>
+            <tr>
+                <th style="...">{{company.companyName}}</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="companyName in company">
+                    <td ng-bind="companyName"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Servers error -->
+    <label> Error: </label><br>
+    <div>{{error}}</div>
+
+    <!-- If the user is not loged in -->
+    <di>{{loginInfo}}</di>
+
+</div>
