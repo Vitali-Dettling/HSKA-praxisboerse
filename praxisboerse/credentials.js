@@ -6,15 +6,15 @@ var Login = angular.module('Login', ['base64']);
 
 
 
-Login.controller('LoginController',['$base64', '$scope', '$http', '$window', '$q', (function($base64, $scope, $http, $window, $q) {
+Login.controller('LoginController',['$base64', '$scope', '$http', '$window', (function($base64, $scope, $http, $window) {
 
     //Variable had to be initialized outside a method
     var $base64;
     var userInfo;
 
     //Initial username and password, to be entered.00
-    $scope.username = 'username';
-    $scope.password = 'password';
+    $scope.username = 'user';
+    $scope.password = 'pass';
 
     $scope.login = function() {
 
@@ -24,7 +24,7 @@ Login.controller('LoginController',['$base64', '$scope', '$http', '$window', '$q
         //If both credentials are included in the text box.
         if ($scope.username && $scope.password) {
 
-            $http.defaults.headers.common.Authorization = 'Basic ' + $base64.encode(this.username + ":" + this.password);
+            $http.defaults.headers.common.Authorization = 'Basic ' + $base64.encode($scope.username + ':' +  $scope.password);
             //Simple GET request.
             $http({
                 method: 'GET',
@@ -42,14 +42,12 @@ Login.controller('LoginController',['$base64', '$scope', '$http', '$window', '$q
             }, function errorCallback(error) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
-                $scope.error = error.data;
+                console.error("ERROR: Credenitals: " + error.message);
             });
-
-            $scope.username = '';
-            $scope.password = '';
         }
+        $scope.username = '';
+        $scope.password = '';
     }
-
 
     //In case of browser refresh.
     function isUserLockedIn() {
