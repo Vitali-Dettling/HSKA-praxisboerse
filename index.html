@@ -6,8 +6,13 @@
     <title>Praxisbörse</title>
 
     <!-- All needed dependencies. -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+
+    <!-- TODO Delete
+        <link type="text/css" rel="stylesheet" href="css/animate.css">
+     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.1/angular.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.1/angular-animate.js"></script> -->
 
     <!-- http://getbootstrap.com/css/-->
     <script type="text/javascript" src="js/ui-bootstrap-tpls-0.13.4.min.js"></script>
@@ -31,12 +36,17 @@
 
     <!-- Login Credentials -->
     <div class="container">
-    <div ng-include="'praxisboerse/LoginTemplate.html'"></div>
+        <div ng-include="'praxisboerse/LoginTemplate.html'"></div>
+    </div>
+
+    <!-- logout Credentials -->
+    <div class="container">
+        <div ng-include="'praxisboerse/LogoutTemplate.html'"></div>
     </div>
 
     <!-- Praxisboerse -->
     <div class="container">
-    <div ng-include="'praxisboerse/PraxisboerseTemplate.html'"></div>
+        <div ng-include="'praxisboerse/PraxisboerseTemplate.html'"></div>
     </div>
 
 

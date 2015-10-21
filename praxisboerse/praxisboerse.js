@@ -10,6 +10,8 @@ praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory', '$base
     var $base64;
     var typeURL;
 
+   // $scope.filter = "Here Filter Text...";
+
     $scope.type = function() {
 
         if ($http.defaults.headers.common.Authorization == null) {

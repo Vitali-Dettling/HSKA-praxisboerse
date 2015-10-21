@@ -6,7 +6,7 @@
 
 
     <label for="type"> Please select one of the following options: </label><br>
-    <select name="singleSelect" id="type" ng-model="data.type">
+    <select name="singleSelect" id="type" ng-model="data.type" >
         <option value="">---Please select---</option>
         <option value="internship">Praxissemester</option>
         <option value="joboffer">Job Angebote</option>
@@ -14,7 +14,13 @@
         <option value="thesis">Thesis Angebote</option>
     </select><br>
 
+
+    <input type="text" ng-model="filter" name="filter" />
     <button ng-click="type()">Selected</button><br>
+
+
+
+
 
     <!-- Servers response for the users request -->
     <label> Responses: </label><br>
