@@ -10,8 +10,8 @@ credentials.controller('LoginController',['$base64', '$scope', '$http', '$window
     var $base64;
 
     //Initial username and password, to be entered.00
-    $scope.username = 'devi1015';
-    $scope.password = 'w4z96sY2';
+    $scope.username = 'user';
+    $scope.password = 'password';
 
     $scope.login = function() {
 
