@@ -12,6 +12,30 @@ praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope
     //TODO It does not work exact 10 offers?
     var ende = 10;//TODO number increase to ten.
     var increment = 10;//TODO number increase to ten.
+    var test = {};
+    $scope.detailedInformation = function() {
+        var myWindow = window.open("", "", "width=800, height=600");
+        var companyInformation = JSON.stringify({
+            test: {
+                totalHits: "totalHits",
+                offers: "offers"
+            }});
+
+       // myWindow.document.writeln(companyInformation);
+        /*myWindow.document.writeln("\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n ");
+        myWindow.document.writeln(companyInformation.totalHits);
+        myWindow.document.writeln(companyInformation.offers);
+        myWindow.document.writeln(companyInformation.offers.id);
+        myWindow.document.writeln(companyInformation.companies);
+        myWindow.document.writeln("\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n ");*/
+        myWindow.document.writeln($scope.test.totalHits);
+        myWindow.document.writeln($scope.test.offers);
+       // myWindow.document.writeln($scope.responseData.offers.id);
+        //myWindow.document.writeln($scope.responseData.companies);
+        myWindow.document.close();
+    }
+
+
     $scope.startOffers = start;//Stating index for offers is 0.
     $scope.endOffers = ende;//Default number on offers.
 
@@ -37,6 +61,8 @@ praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope
                 // this callback will be called asynchronously
                 // when the response is available
                 $scope.responseData = response.data;
+                //TODO Delete
+                test = response.data;
                 //Reset of the offers.
                 if($scope.responseData.offers == 0){
                     $scope.startOffers = start;//Stating index for offers is 0.
@@ -60,7 +86,7 @@ praxisboerse.factory('PraxisboerseFactory', function() {
 
     var server = {};
     var urlREST = "https://www.iwi.hs-karlsruhe.de/Intranetaccess/REST/joboffer/offers/";
-
+   // var urlREST = "https://iwi-i-intra-01.hs-karlsruhe.de/Intranetaccess/REST/credential/encryptedpassword/";
 
     detectMobile = function() {
         if(window.innerWidth <= 800 && window.innerHeight <= 600) {
@@ -74,7 +100,8 @@ praxisboerse.factory('PraxisboerseFactory', function() {
 
         //Checks whether it is mobile device or not.
         if(!detectMobile()){
-            endOffers = -1;
+            endOffers = -1;//Returns all maches.
+            startOffers = 0;//Starting index
         }
 
         if(angular.isDefined(filter)){

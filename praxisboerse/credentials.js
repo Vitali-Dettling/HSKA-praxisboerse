@@ -29,6 +29,7 @@ Login.controller('LoginController',['$base64', '$scope', '$http', '$window', (fu
             $http({
                 method: 'GET',
                 url: "https://www.iwi.hs-karlsruhe.de/Intranetaccess/REST/credential/encryptedpassword/",
+                //url: "https://iwi-i-intra-01.hs-karlsruhe.de/Intranetaccess/REST/credential/encryptedpassword/",
                 port: 1234
             }).then(function successCallback(response) {
                 // this callback will be called asynchronously
