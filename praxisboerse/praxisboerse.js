@@ -9,39 +9,43 @@ praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope
     //Variable had to be initialized outside a method
     var requestREST;
     var start = 0;
-    //TODO It does not work exact 10 offers?
-    var ende = 10;//TODO number increase to ten.
-    var increment = 10;//TODO number increase to ten.
-    var test = {};
-    $scope.detailedInformation = function() {
-        var myWindow = window.open("", "", "width=800, height=600");
-        var companyInformation = JSON.stringify({
-            test: {
-                totalHits: "totalHits",
-                offers: "offers"
-            }});
+    var count = 10;
+    var increment = 10;
+    var reset;
 
-       // myWindow.document.writeln(companyInformation);
-        /*myWindow.document.writeln("\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n ");
-        myWindow.document.writeln(companyInformation.totalHits);
-        myWindow.document.writeln(companyInformation.offers);
-        myWindow.document.writeln(companyInformation.offers.id);
-        myWindow.document.writeln(companyInformation.companies);
-        myWindow.document.writeln("\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n ");*/
-        myWindow.document.writeln($scope.test.totalHits);
-        myWindow.document.writeln($scope.test.offers);
-       // myWindow.document.writeln($scope.responseData.offers.id);
-        //myWindow.document.writeln($scope.responseData.companies);
-        myWindow.document.close();
+    $scope.detailedInformationOffer = function(infoOffers) {
+        var myWindow = window.open("", "", "resizable=1", "width=200", "height=100");
+        angular.forEach($scope.responseData.companies, function (offers) {
+            if(offers.companyName == infoOffers.companyName) {
+                myWindow.document.writeln(offers.description);
+            }
+        });
     }
 
+    $scope.detailedInformationCompany = function(infoCompany) {
+        var myWindow = window.open("", "", "resizable=1", "width=200", "height=100");
+        angular.forEach($scope.responseData.companies, function (infoCompanies) {
+            if(infoCompany.companyName == infoCompanies.companyName) {
+                myWindow.document.writeln("Comapny Name: " + infoCompany.companyName + "</br>");
+                myWindow.document.writeln("City: " + infoCompany.city + "</br>");
+                myWindow.document.writeln("Street: " + infoCompany.street + "</br>");
+                myWindow.document.writeln("Country: " + infoCompany.country + "</br>");
+                myWindow.document.writeln("Zip Code: " + infoCompany.zipCode + "</br>");
+                myWindow.document.writeln("Employees: " + infoCompany.numberOfEmployees + "</br>");
+                myWindow.document.writeln("Website: " + infoCompany.website + "</br>");
+            }
+        });
+    }
 
     $scope.startOffers = start;//Stating index for offers is 0.
-    $scope.endOffers = ende;//Default number on offers.
 
     $scope.nextOffers = function(){
-        $scope.endOffers = $scope.endOffers + increment;
-        $scope.startOffers = $scope.startOffers + increment;
+
+        if(reset == 0) {
+            $scope.startOffers = 0;
+        }else{
+            $scope.startOffers = $scope.startOffers + increment;
+        }
     };
 
     $scope.type = function() {
@@ -50,7 +54,7 @@ praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope
             $scope.loginInfo = "You are not locked in!!!"
         } else {
 
-            requestREST = PraxisboerseFactory.getTypeURL($scope.data.type, $scope.filter,  $scope.startOffers, $scope.endOffers);
+            requestREST = PraxisboerseFactory.getTypeURL($scope.data.type, $scope.filter,  $scope.startOffers, count);
 
             // Simple GET request.
             $http({
@@ -61,13 +65,8 @@ praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope
                 // this callback will be called asynchronously
                 // when the response is available
                 $scope.responseData = response.data;
-                //TODO Delete
-                test = response.data;
                 //Reset of the offers.
-                if($scope.responseData.offers == 0){
-                    $scope.startOffers = start;//Stating index for offers is 0.
-                    $scope.endOffers = ende;//Default number on offers.
-                }
+                reset = $scope.responseData.offers;
             }, function errorCallback(error) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
@@ -81,13 +80,13 @@ praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope
     $scope.$on('type', function(event) {$scope.type();});
 }]);
 
-//Am Anfang des Programmes wird die factory immer als erstes einmal durchgelaufen???
 praxisboerse.factory('PraxisboerseFactory', function() {
 
     var server = {};
     var urlREST = "https://www.iwi.hs-karlsruhe.de/Intranetaccess/REST/joboffer/offers/";
-   // var urlREST = "https://iwi-i-intra-01.hs-karlsruhe.de/Intranetaccess/REST/credential/encryptedpassword/";
+  //var urlREST = "https://iwi-i-intra-01.hs-karlsruhe.de/Intranetaccess/REST/credential/encryptedpassword/";
 
+    //Detect whether it is a mobile device or an browse.
     detectMobile = function() {
         if(window.innerWidth <= 800 && window.innerHeight <= 600) {
             return true;
@@ -96,25 +95,25 @@ praxisboerse.factory('PraxisboerseFactory', function() {
         }
     }
 
-    server.getTypeURL = function(type, filter, startOffers, endOffers){
+    server.getTypeURL = function(type, filter, startOffers, count){
 
         //Checks whether it is mobile device or not.
         if(!detectMobile()){
-            endOffers = -1;//Returns all maches.
+            count = -1;//Returns all maches.
             startOffers = 0;//Starting index
         }
 
         if(angular.isDefined(filter)){
-            return urlREST + type + "/" + filter + "/" + startOffers.toString()+ "/" + endOffers.toString();
+            return urlREST + type + "/" + filter + "/" + startOffers.toString()+ "/" + count.toString();
         }
         else{
-            return urlREST + type + "/" + startOffers.toString() + "/" + endOffers.toString();
+            return urlREST + type + "/" + startOffers.toString() + "/" + count.toString();
         }
      };
 
     return {
-        getTypeURL: function(type, filter, startOffers, endOffers) {
-            return server.getTypeURL(type, filter, startOffers, endOffers);
+        getTypeURL: function(type, filter, startOffers, count) {
+            return server.getTypeURL(type, filter, startOffers, count);
         }
     }
 

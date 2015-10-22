@@ -20,24 +20,17 @@
 
 
     <!-- Servers response for the users request -->
-    <label> <h2>Companies: </h2></label><br>
+    <label> <h2>Companies Information: </h2></label><br>
     <div ng-repeat="company in responseData.companies">
 
         <h2 ng-bind="mealgroup.title"></h2>
         <table class="table table-bordered table-hover table-condensed">
             <thead>
             <tr>
-                <button class="btn btn-default" ng-click="detailedInformation()">{{company.companyName}}</button>
+                <td ng-click="detailedInformationCompany(company)", width="400">{{company.companyName}}</td>
+                <td ng-click="detailedInformationOffer(company)" >Offer</td>
             </tr>
             </thead>
-            <tbody>
-               <!-- <span ng-if="detailedInformation()">
-                                <tr ng-repeat="companyName in company">
-                                    <td ng-bind="companyName"></td>
-                                </tr>
-
-                </span>-->
-            </tbody>
         </table>
     </div>
 
