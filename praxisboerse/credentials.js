@@ -1,69 +1,157 @@
-/**
- * Created by Vitali Dettling on 14.10.2015.
- */
-
 var Login = angular.module('Login', ['base64']);
 
-
-
-Login.controller('LoginController',['$base64', '$scope', '$http', '$window', (function($base64, $scope, $http, $window) {
+Login.controller('LoginController',['$base64', '$scope', '$http', '$window', '$rootScope', (function($base64, $scope, $http, $window, $rootScope) {
 
     //Variable had to be initialized outside a method
     var $base64;
     var userInfo;
 
-    //Initial username and password, to be entered.00
-    $scope.username = 'user';
-    $scope.password = 'pass';
+    //Initial username and password, to be entered
+    $scope.username = 'scse1040';
+    $scope.password = 'f9ndm5We';
+
+    isUserLoggedIn();
 
     $scope.login = function() {
 
-        //In case of a browser refresh.
-        isUserLockedIn();
-
-        //If both credentials are included in the text box.
         if ($scope.username && $scope.password) {
 
             $http.defaults.headers.common.Authorization = 'Basic ' + $base64.encode($scope.username + ':' +  $scope.password);
-            //Simple GET request.
+
             $http({
                 method: 'GET',
-                url: "https://www.iwi.hs-karlsruhe.de/Intranetaccess/REST/credential/encryptedpassword/",
-                //url: "https://iwi-i-intra-01.hs-karlsruhe.de/Intranetaccess/REST/credential/encryptedpassword/",
-                port: 1234
+                url: "http://www.iwi.hs-karlsruhe.de/Intranetaccess/REST/credential/encryptedpassword/",
+                port: 1234,
+                transformResponse: function(data){return data;}
             }).then(function successCallback(response) {
-                // this callback will be called asynchronously
-                // when the response is available
+
                 userInfo = {
                     accessToken: response.data,
                     userName: response.data.userName
-                }
+                };
+
+
                 $window.sessionStorage["userInfo"] = JSON.stringify(userInfo);
                 $scope.response = userInfo.accessToken;
+
+
+                $rootScope.isLoggedIn     = "TRUE";
+                $rootScope.userLoggedIn   = $scope.username;
+                $rootScope.userLoggedInPW = $scope.password;
+
+
+                <!-- Now load Categories-->
+                getCategories();
+
+                <!-- User Infos-->
+                getUserInfo();
+
+                <!-- Get Countries -->
+                getCountries();
+
             }, function errorCallback(error) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
-                console.error("ERROR: Credenitals: " + error.message);
+                console.error("ERROR with Credentials: " + error.message);
+
+                $rootScope.isLoggedIn = "";
             });
         }
-        $scope.username = '';
-        $scope.password = '';
-    }
+
+    };
 
     //In case of browser refresh.
-    function isUserLockedIn() {
+    function isUserLoggedIn() {
         if ($window.sessionStorage["userInfo"]) {
-            //TODO after the browser refresh the userInfo is not doing anything.
+
             userInfo = JSON.parse($window.sessionStorage["userInfo"]);
+
             return true;
         }
         return false;
     }
 
+    $scope.logout = function() {
+
+        $rootScope.isLoggedIn = "";
+
+        $window.sessionStorage.clear();
+        $window.location.reload();
+    };
+
+    function getCategories() {
+
+        if ($http.defaults.headers.common.Authorization == null) {
+            $scope.loginInfo = "You are not logged in!"
+        } else {
+
+            var requestREST = "https://www.iwi.hs-karlsruhe.de/Intranetaccess/REST/joboffer/offertypes/all/";
+
+            // Simple GET request.
+            $http({
+                method: 'GET',
+                url: requestREST,
+                port: 1234
+            }).then(function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+                $rootScope.kategorien = response.data;
+
+            }, function errorCallback(error) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                console.error("ERROR in Praxisbörse: " + error.data);
+            });
+        }
+    }
+
+    function getCountries() {
+
+        if ($http.defaults.headers.common.Authorization == null) {
+
+        } else {
+
+            var requestREST = "https://www.iwi.hs-karlsruhe.de/Intranetaccess/REST/joboffer/countries/all/" ;
+
+            $http({
+                method: 'GET',
+                url: requestREST,
+                port: 1234
+            }).then(function successCallback(response) {
+
+                $rootScope.laender = response.data;
+
+            }, function errorCallback(error) {
+
+            });
+        }
+    }
+    function getUserInfo() {
+
+        if ($http.defaults.headers.common.Authorization == null) {
+        } else {
+
+            var requestREST = "https://www.iwi.hs-karlsruhe.de/Intranetaccess/REST/credential/info/";
+
+            $http({
+                method: 'GET',
+                url: requestREST,
+                port: 1234
+            }).then(function successCallback(response) {
+
+                $rootScope.userFullName = response.data.firstName + " " + response.data.lastName + " (" + response.data.adsName + ")";
+
+            }, function errorCallback(error) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                console.error("ERROR in Praxisbörse: " + error.data);
+            });
+        }
+    }
 })]);
 
-Login.config(function($httpProvider) {
 
+Login.config(function($httpProvider) {
     // Enable Cross-Domain-Communication
     $httpProvider.defaults.useXDomain = true;
     // Enable identification
@@ -81,6 +169,3 @@ Logout.controller('LogoutController', ['$scope', '$window', (function($scope, $w
         $window.location.reload();
     };
 })]);
-
-
-

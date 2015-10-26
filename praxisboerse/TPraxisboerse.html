@@ -1,0 +1,82 @@
+<div ng-controller="PraxisboerseController" ng-cloak>
+
+    <div ng-show="responseData">
+
+        <div ng-show="!isMerkzettel">
+            <h2>Angebote</h2><br>
+
+            <div ng-show="(responseData.offers | filter:{countryId: fland}) == 0">
+                Es wurden leider keine passende Angebote gefunden.
+            </div>
+
+            <div ng-repeat="offer in responseData.offers | filter:{countryId: fland}">
+
+                <table class="table table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <td ng-click="detailedInformationCompany(responseData.companies[offer.companyId])" width="200">
+                            {{offer.shortDescription}}
+                        </td>
+                        <td width="30">
+                            <md-button ng-click="detailedInformationOffer(offer)">Zeige Details</md-button>
+                        </td>
+
+                        <td width="75">{{responseData.companies[offer.companyId].country}},
+                            {{responseData.companies[offer.companyId].city}}
+                        </td>
+
+                        <td width="90">
+                            <md-button md-no-ink class="md-primary" ng-click="addToMerkzettel(offer.id)">Auf Merkzettel
+                                legen
+                            </md-button>
+                        </td>
+
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+
+
+        </div>
+
+        <div ng-show="isMerkzettel">
+            <h2>Merkzettel</h2><br>
+
+            <div ng-show="responseData.offers == 0">
+                Der persönliche Merkzettel ist momentan leer.
+            </div>
+
+            <div ng-repeat="offer in responseData.offers">
+
+                <table class="table table-bordered table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <td ng-click="detailedInformationCompany(responseData.companies[offer.companyId])" width="200">
+                            {{offer.shortDescription}}
+                        </td>
+                        <td width="30">
+                            <md-button ng-click="detailedInformationOffer(offer)">Zeige Details</md-button>
+                        </td>
+
+                        <td width="75">{{responseData.companies[offer.companyId].country}},
+                            {{responseData.companies[offer.companyId].city}}
+                        </td>
+
+                        <td width="90">
+                            <md-button md-no-ink class="md-primary" ng-click="removeMerkzettel(offer.id)">Von Merkzettel
+                                löschen
+                            </md-button>
+                        </td>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+
+        <!-- Weiter button-->
+        <md-button class="md-raised md-primary" ng-click="type()">&gt;&gt; (Weiter)</md-button>
+
+    </div>
+
+</div>

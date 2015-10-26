@@ -1,0 +1,38 @@
+<div ng-controller="LoginController">
+
+
+    <div layout="row" layout-wrap>
+
+        <div flex="35">
+
+        </div>
+
+        <div flex="30">
+
+            <h2>Praxisbörse Anmeldung</h2>
+
+            </br>
+
+            <md-input-container flex>
+                <label>IZ-Kennung</label>
+                <input ng-model="username" required md-maxlength="8" md-no-autogrow>
+            </md-input-container>
+
+            <md-input-container flex>
+                <label>Passwort</label>
+                <input type="password" ng-model="password" required md-no-autogrow>
+            </md-input-container>
+
+            <md-button class="md-raised md-primary" ng-click="login()">Anmelden</md-button>
+
+        </div>
+
+        <div flex="35">
+
+        </div>
+
+
+    </div>
+
+
+</div>

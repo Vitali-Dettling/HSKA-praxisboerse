@@ -1,26 +1,18 @@
-/**
- * Created by Vitali Dettling on 14.10.2015.
- */
+var praxisboerse = angular.module('praxisboerse', [ 'ngMaterial' ]);
 
-var praxisboerse = angular.module('praxisboerse', []);
-
-praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope', '$http', function(PraxisboerseFactory, $scope, $http) {
+praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope', '$http', '$rootScope','$base64', function(PraxisboerseFactory, $scope, $http, $rootScope, $base64) {
 
     //Variable had to be initialized outside a method
     var requestREST;
-    var start = 0;
-    var count = 10;
-    var increment = 10;
+    var start       = 0;
+    var count       = 10;
+    var increment   = 10;
     var reset;
 
-    $scope.detailedInformationOffer = function(infoOffers) {
+    $scope.detailedInformationOffer = function(offer) {
         var myWindow = window.open("", "", "resizable=1", "width=200", "height=100");
-        angular.forEach($scope.responseData.companies, function (offers) {
-            if(offers.companyName == infoOffers.companyName) {
-                myWindow.document.writeln(offers.description);
-            }
-        });
-    }
+                myWindow.document.writeln(offer.description);
+    };
 
     $scope.detailedInformationCompany = function(infoCompany) {
         var myWindow = window.open("", "", "resizable=1", "width=200", "height=100");
@@ -35,9 +27,37 @@ praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope
                 myWindow.document.writeln("Website: " + infoCompany.website + "</br>");
             }
         });
-    }
+    };
 
-    $scope.startOffers = start;//Stating index for offers is 0.
+    $scope.addToMerkzettel = function(offer) {
+
+        //$http.defaults.headers.common.Authorization = 'Basic ' + $base64.encode($rootScope.userLoggedIn + ':' +  $rootScope.userLoggedInPW);
+
+        if ($http.defaults.headers.common.Authorization == null) {
+
+        } else {
+
+            requestREST = "https://www.iwi.hs-karlsruhe.de/Intranetaccess/REST/joboffer/notepad/offer/";
+
+            $http({
+                method: 'POST',
+                url: requestREST,
+                data: offer,
+                headers : {'Content-Type':'application/json'}
+            }).then(function successCallback(response) {
+
+                // nothing to do here!
+
+            }, function errorCallback(error) {
+
+            });
+        }
+
+    };
+
+
+
+    $scope.startOffers = start;
 
     $scope.nextOffers = function(){
 
@@ -50,13 +70,18 @@ praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope
 
     $scope.type = function() {
 
+        // set country filter
+        $rootScope.fland = this.land;
+
+        // remove status for Merkzettel (-> Angebote)
+        $rootScope.isMerkzettel = "";
+
         if ($http.defaults.headers.common.Authorization == null) {
-            $scope.loginInfo = "You are not locked in!!!"
+            $scope.loginInfo = "You are not logged in!"
         } else {
 
-            requestREST = PraxisboerseFactory.getTypeURL($scope.data.type, $scope.filter,  $scope.startOffers, count);
+            requestREST = PraxisboerseFactory.getTypeURL($scope.kategorie, $scope.filter,  $scope.startOffers, count);
 
-            // Simple GET request.
             $http({
                 method: 'GET',
                 url: requestREST,
@@ -64,18 +89,71 @@ praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope
             }).then(function successCallback(response) {
                 // this callback will be called asynchronously
                 // when the response is available
-                $scope.responseData = response.data;
+                $rootScope.responseData = response.data;
                 //Reset of the offers.
-                reset = $scope.responseData.offers;
+                reset = $rootScope.responseData.offers;
+
             }, function errorCallback(error) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
-                console.error("ERROR: Praxisb�rse: " + error.data);
+                console.error("ERROR in Praxisbörse: " + error.data);
             });
         }
     };
 
-    //Listener when broadcasting.
+
+    $scope.showMerkzettel = function() {
+
+        $rootScope.isMerkzettel = "TRUE";
+
+        if ($http.defaults.headers.common.Authorization == null) {
+            $scope.loginInfo = "You are not logged in!"
+        } else {
+
+            requestREST = "https://www.iwi.hs-karlsruhe.de/Intranetaccess/REST/joboffer/notepad/" + $scope.startOffers + "/" + count + "/";
+
+            $http({
+                method: 'GET',
+                url: requestREST,
+                port: 1234
+            }).then(function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+                $rootScope.responseData = response.data;
+                //Reset of the offers.
+                reset = $rootScope.responseData.offers;
+
+            }, function errorCallback(error) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                console.error("ERROR in Praxisbörse: " + error.data);
+            });
+        }
+    };
+
+    $scope.removeMerkzettel = function(offerId) {
+
+        if ($http.defaults.headers.common.Authorization == null) {
+
+        } else {
+
+            requestREST = "https://www.iwi.hs-karlsruhe.de/Intranetaccess/REST/joboffer/notepad/offer/" + offerId + "/";
+
+            $http({
+                method: 'DELETE',
+                url: requestREST,
+            }).then(function successCallback(response) {
+
+                $scope.showMerkzettel();
+
+            }, function errorCallback(error) {
+
+            });
+        }
+    };
+
+
+    //Listen when broadcasting
     $scope.$on('nextOffers', function(event) {$scope.nextOffers();});
     $scope.$on('type', function(event) {$scope.type();});
 }]);
@@ -84,7 +162,6 @@ praxisboerse.factory('PraxisboerseFactory', function() {
 
     var server = {};
     var urlREST = "https://www.iwi.hs-karlsruhe.de/Intranetaccess/REST/joboffer/offers/";
-  //var urlREST = "https://iwi-i-intra-01.hs-karlsruhe.de/Intranetaccess/REST/credential/encryptedpassword/";
 
     //Detect whether it is a mobile device or an browse.
     detectMobile = function() {
@@ -93,13 +170,13 @@ praxisboerse.factory('PraxisboerseFactory', function() {
         } else {
             return false;
         }
-    }
+    };
 
     server.getTypeURL = function(type, filter, startOffers, count){
 
         //Checks whether it is mobile device or not.
         if(!detectMobile()){
-            count = -1;//Returns all maches.
+            count = -1;//Returns all matches
             startOffers = 0;//Starting index
         }
 

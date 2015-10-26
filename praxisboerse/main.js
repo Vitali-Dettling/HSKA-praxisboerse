@@ -1,16 +1,16 @@
-/**
- * Created by Vitali Dettling on 15.10.2015.
- */
 'use strict';
 
-var mainApp = angular.module('mainApp', ['Login', 'Logout', 'praxisboerse']);//'ui.bootstrap'
+var mainApp = angular.module('mainApp', ['Login', 'Logout', 'praxisboerse']);
 
 /**
  * Controller for the main page.
  */
-mainApp.controller('MainController', [ '$scope', function( $scope ) {
-    //TODO Debug information delete after the program is working.
+mainApp.controller('MainController', [ '$scope', '$rootScope', function( $scope, $rootScope ) {
+
     $scope.DependenciesWrong = "Dependencies are Working.";
+
+    $rootScope.isLoggedIn = "";
+
     //TODO End Debug information. Delete
 
     $scope.type = function() {
