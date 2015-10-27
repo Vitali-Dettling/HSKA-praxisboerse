@@ -7,8 +7,8 @@ Login.controller('LoginController',['$base64', '$scope', '$http', '$window', '$r
     var userInfo;
 
     //Initial username and password, to be entered
-    $scope.username = 'scse1040';
-    $scope.password = 'f9ndm5We';
+    $scope.username = '';
+    $scope.password = '';
 
     isUserLoggedIn();
 
@@ -50,11 +50,12 @@ Login.controller('LoginController',['$base64', '$scope', '$http', '$window', '$r
                 getCountries();
 
             }, function errorCallback(error) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-                console.error("ERROR with Credentials: " + error.message);
+
+
 
                 $rootScope.isLoggedIn = "";
+
+                $scope.failedLogin = "TRUE";
             });
         }
 

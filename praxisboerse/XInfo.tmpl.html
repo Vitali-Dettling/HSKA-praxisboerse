@@ -1,0 +1,77 @@
+
+
+
+<md-dialog aria-label="Details der Firma" ng-cloak>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{getCompany().companyName}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content style="max-width:800px;max-height:810px; ">
+            <div class="md-dialog-content">
+
+                <table class="table table-bordered table-hover table-condensed">
+                    <thead>
+
+                    <tr>
+                        <td width="75">Name</td>
+                        <td width="300">{{getCompany().companyName}}</td>
+                    </tr>
+
+                    <tr>
+                        <td width="75">Stadt</td>
+                        <td width="300">{{getCompany().city}}</td>
+                    </tr>
+
+                    <tr>
+                        <td width="75">PLZ</td>
+                        <td width="300">{{getCompany().zipCode}}</td>
+                    </tr>
+
+                    <tr>
+                        <td width="75">Straße</td>
+                        <td width="300">{{getCompany().street}}</td>
+                    </tr>
+
+                    <tr>
+                        <td width="75">Land</td>
+                        <td width="300">{{getCompany().country}}</td>
+                    </tr>
+
+                    <tr>
+                        <td width="75">Mitarbeiter</td>
+                        <td width="300">{{getCompany().numberOfEmployees}}</td>
+                    </tr>
+
+                    <tr>
+                        <td width="75">Webseite</td>
+                        <td width="300"><a href="{{getCompany().website}}" target="_blank">{{getCompany().website}}</a></td>
+                    </tr>
+
+                    </thead>
+                </table>
+
+
+
+                <!--    !MAP!   -->
+
+
+
+            </div>
+        </md-dialog-content>
+        <div class="md-actions" layout="row">
+            <md-button ng-click="cancel()" style="margin-right:20px;" >
+                Schließen
+            </md-button>
+        </div>
+    </form>
+</md-dialog>
+
+
+
+

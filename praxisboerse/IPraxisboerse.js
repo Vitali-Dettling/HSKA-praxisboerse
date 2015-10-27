@@ -1,6 +1,6 @@
 var praxisboerse = angular.module('praxisboerse', [ 'ngMaterial' ]);
 
-praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope', '$http', '$rootScope','$base64', function(PraxisboerseFactory, $scope, $http, $rootScope, $base64) {
+praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope', '$http', '$rootScope','$base64', '$mdDialog', function(PraxisboerseFactory, $scope, $http, $rootScope, $base64, $mdDialog) {
 
     //Variable had to be initialized outside a method
     var requestREST;
@@ -9,25 +9,43 @@ praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope
     var increment   = 10;
     var reset;
 
+
+    $scope.showCompanyDetails = function(ev, company) {
+
+        companyname = "Hallo";
+
+        $mdDialog.show({
+            controller: DialogController,
+            templateUrl: 'praxisboerse/XInfo.tmpl.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose:true,
+            locals: {company: company}
+        })
+    };
+
+    $scope.showOfferDetails = function(ev, offer) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        // Modal dialogs should fully cover application
+        // to prevent interaction outside of dialog
+        $mdDialog.show(
+            $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#popupContainer')))
+                .clickOutsideToClose(true)
+                .title('Details zum Angebot')
+                .content(offer.description)
+                .ariaLabel('Alert Dialog Demo')
+                .ok('Schließen')
+                .targetEvent(ev)
+        );
+    };
+
+
     $scope.detailedInformationOffer = function(offer) {
         var myWindow = window.open("", "", "resizable=1", "width=200", "height=100");
                 myWindow.document.writeln(offer.description);
     };
 
-    $scope.detailedInformationCompany = function(infoCompany) {
-        var myWindow = window.open("", "", "resizable=1", "width=200", "height=100");
-        angular.forEach($scope.responseData.companies, function (infoCompanies) {
-            if(infoCompany.companyName == infoCompanies.companyName) {
-                myWindow.document.writeln("Comapny Name: " + infoCompany.companyName + "</br>");
-                myWindow.document.writeln("City: " + infoCompany.city + "</br>");
-                myWindow.document.writeln("Street: " + infoCompany.street + "</br>");
-                myWindow.document.writeln("Country: " + infoCompany.country + "</br>");
-                myWindow.document.writeln("Zip Code: " + infoCompany.zipCode + "</br>");
-                myWindow.document.writeln("Employees: " + infoCompany.numberOfEmployees + "</br>");
-                myWindow.document.writeln("Website: " + infoCompany.website + "</br>");
-            }
-        });
-    };
 
     $scope.addToMerkzettel = function(offer) {
 
@@ -194,4 +212,7 @@ praxisboerse.factory('PraxisboerseFactory', function() {
         }
     }
 
+
+
 });
+

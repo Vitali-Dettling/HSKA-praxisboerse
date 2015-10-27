@@ -25,6 +25,14 @@
 
             <md-button class="md-raised md-primary" ng-click="login()">Anmelden</md-button>
 
+            <br>
+            <br>
+
+
+            <div ng-show="failedLogin">
+                <label ng-style="md-warn">Anmeldevorgang erfolglos. Bitte IZ-Kennung und Passwort überprüfen.</label>
+            </div>
+
         </div>
 
         <div flex="35">

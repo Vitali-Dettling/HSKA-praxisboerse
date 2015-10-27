@@ -5,7 +5,7 @@ var mainApp = angular.module('mainApp', ['Login', 'Logout', 'praxisboerse']);
 /**
  * Controller for the main page.
  */
-mainApp.controller('MainController', [ '$scope', '$rootScope', function( $scope, $rootScope ) {
+mainApp.controller('MainController', [ '$scope', '$rootScope', '$mdDialog', function( $scope, $rootScope,  $mdDialog) {
 
     $scope.DependenciesWrong = "Dependencies are Working.";
 
@@ -17,6 +17,11 @@ mainApp.controller('MainController', [ '$scope', '$rootScope', function( $scope,
         $scope.$broadcast('nextOffers');
         $scope.$broadcast('type');
     };
+
+
+
+
+
 
 
 }]);

@@ -14,11 +14,11 @@
                 <table class="table table-bordered table-hover table-condensed">
                     <thead>
                     <tr>
-                        <td ng-click="detailedInformationCompany(responseData.companies[offer.companyId])" width="200">
+                        <td ng-click="showCompanyDetails($event,responseData.companies[offer.companyId])" width="200">
                             {{offer.shortDescription}}
                         </td>
                         <td width="30">
-                            <md-button ng-click="detailedInformationOffer(offer)">Zeige Details</md-button>
+                            <md-button ng-click="showOfferDetails($event, offer)">Zeige Details</md-button>
                         </td>
 
                         <td width="75">{{responseData.companies[offer.companyId].country}},
@@ -55,7 +55,7 @@
                             {{offer.shortDescription}}
                         </td>
                         <td width="30">
-                            <md-button ng-click="detailedInformationOffer(offer)">Zeige Details</md-button>
+                            <md-button ng-click="showOfferDetails($event, offer)">Zeige Details</md-button>
                         </td>
 
                         <td width="75">{{responseData.companies[offer.companyId].country}},
