@@ -1,4 +1,4 @@
-var praxisboerse = angular.module('praxisboerse', [ 'ngMaterial' ]);
+var praxisboerse = angular.module('praxisboerse', [ 'ngMaterial' , 'uiGmapgoogle-maps']);
 
 praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope', '$http', '$rootScope','$base64', '$mdDialog', function(PraxisboerseFactory, $scope, $http, $rootScope, $base64, $mdDialog) {
 
@@ -9,10 +9,10 @@ praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope
     var increment   = 10;
     var reset;
 
+    $scope.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
+
 
     $scope.showCompanyDetails = function(ev, company) {
-
-        companyname = "Hallo";
 
         $mdDialog.show({
             controller: DialogController,
@@ -24,10 +24,9 @@ praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope
         })
     };
 
+
     $scope.showOfferDetails = function(ev, offer) {
-        // Appending dialog to document.body to cover sidenav in docs app
-        // Modal dialogs should fully cover application
-        // to prevent interaction outside of dialog
+
         $mdDialog.show(
             $mdDialog.alert()
                 .parent(angular.element(document.querySelector('#popupContainer')))

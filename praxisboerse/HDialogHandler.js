@@ -1,10 +1,12 @@
-angular.module('dialogHandler', ['ngMaterial'])
-    .controller('DialogController', function($scope, $mdDialog, company) {
+angular.module('dialogHandler', ['ngMaterial','uiGmapgoogle-maps'])
+    .controller('DialogController', function($scope, $mdDialog, $http, company) {
+
+
 
     });
 
 
-function DialogController($scope, $mdDialog, company) {
+function DialogController($scope, $mdDialog, company, $http) {
     $scope.hide = function() {
         $mdDialog.hide();
     };
@@ -17,4 +19,7 @@ function DialogController($scope, $mdDialog, company) {
     $scope.getCompany = function(){
         return company;
     }
+
+
+
 }
