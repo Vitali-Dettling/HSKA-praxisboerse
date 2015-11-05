@@ -1,18 +1,27 @@
-var praxisboerse = angular.module('praxisboerse', [ 'ngMaterial' , 'uiGmapgoogle-maps']);
+var praxisboerse = angular.module('praxisboerse', [ 'ngMaterial','uiGmapgoogle-maps']);
 
-praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope', '$http', '$rootScope','$base64', '$mdDialog', function(PraxisboerseFactory, $scope, $http, $rootScope, $base64, $mdDialog) {
+praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope', '$http', '$rootScope','$base64', '$mdDialog', 'uiGmapGoogleMapApi', function(PraxisboerseFactory, $scope, $http, $rootScope, $base64, $mdDialog, uiGmapGoogleMapApi) {
 
-    //Variable had to be initialized outside a method
+    var lat  = 49;
+    var long = 9;
+    $scope.map = {center: {latitude: lat, longitude: long }, zoom: 14 };
+
+
+
+    //Variable that have to be initialized outside a method (globals)
     var requestREST;
     var start       = 0;
     var count       = 10;
     var increment   = 10;
     var reset;
 
-    $scope.map = { center: { latitude: 45, longitude: -73 }, zoom: 8 };
 
 
     $scope.showCompanyDetails = function(ev, company) {
+
+
+        var location = geocodeAddress($scope.map, "Karlsruhe");
+
 
         $mdDialog.show({
             controller: DialogController,
@@ -23,6 +32,31 @@ praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope
             locals: {company: company}
         })
     };
+
+
+    geocodeAddress = function(resultMap, address) {
+
+        var geocoder = new google.maps.Geocoder();
+
+        geocoder.geocode({'address': address}, function(results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+
+                lat  = results[0].geometry.location.lat();
+                long = results[0].geometry.location.lng();
+
+
+
+                $scope.$apply(function() {
+                    $scope.map.center.latitude = lat;
+                    $scope.map.center.longitude = lat;
+                });
+
+
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
 
 
     $scope.showOfferDetails = function(ev, offer) {
@@ -168,6 +202,7 @@ praxisboerse.controller('PraxisboerseController', ['PraxisboerseFactory','$scope
             });
         }
     };
+
 
 
     //Listen when broadcasting

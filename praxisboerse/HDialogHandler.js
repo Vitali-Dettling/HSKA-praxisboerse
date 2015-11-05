@@ -1,4 +1,4 @@
-angular.module('dialogHandler', ['ngMaterial','uiGmapgoogle-maps'])
+angular.module('dialogHandler', ['ngMaterial'])
     .controller('DialogController', function($scope, $mdDialog, $http, company) {
 
 
@@ -19,7 +19,11 @@ function DialogController($scope, $mdDialog, company, $http) {
     $scope.getCompany = function(){
         return company;
     }
-
-
+    $scope.getLong = function(){
+        return 49;
+    }
+    $scope.getLat = function(){
+        return 9;
+    }
 
 }

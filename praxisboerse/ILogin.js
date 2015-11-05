@@ -7,7 +7,7 @@ Login.controller('LoginController',['$base64', '$scope', '$http', '$window', '$r
     var userInfo;
 
     //Initial username and password, to be entered
-    $scope.username = 'scse1040';
+    $scope.username = '';
     $scope.password = '';
 
     isUserLoggedIn();

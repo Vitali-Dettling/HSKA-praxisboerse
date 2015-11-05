@@ -5,7 +5,7 @@
                 <h2>{{getCompany().companyName}}</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
-                    <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                    <md-icon md-svg-src="img/close.png" aria-label="Close dialog"></md-icon>
                 </md-button>
             </div>
         </md-toolbar>
@@ -47,33 +47,27 @@
 
                     <tr>
                         <td width="75">Webseite</td>
-                        <td width="300"><a href="{{getCompany().website}}" target="_blank">{{getCompany().website}}</a></td>
+                        <td width="300"><a href="{{getCompany().website}}" target="_blank">{{getCompany().website}}</a>
+                        </td>
                     </tr>
 
                     </thead>
                 </table>
 
-
                 <!--  M   A   P  -->
                 <div id="map_canvas" ng-controller="PraxisboerseController">
-                    <ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
+                    <ui-gmap-google-map center="map.center" zoom="map.zoom" options="options" control="map">
+                    </ui-gmap-google-map>
                 </div>
-
-
-
 
 
 
             </div>
         </md-dialog-content>
         <div class="md-actions" layout="row">
-            <md-button ng-click="cancel()" style="margin-right:20px;" >
+            <md-button ng-click="cancel()" style="margin-right:20px;">
                 Schließen
             </md-button>
         </div>
     </form>
 </md-dialog>
-
-
-
-
